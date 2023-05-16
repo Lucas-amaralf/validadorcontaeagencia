@@ -1,0 +1,78 @@
+function validarAgenciaContaItau(agencia, conta) {
+  // Verifica se os valores são numéricos
+  if (!/^\d+$/.test(agencia) || !/^\d+$/.test(conta)) {
+    return false;
+  }
+
+  // Validação da agência
+  if (agencia.length !== 4) {
+    return false;
+  }
+
+  let digitoAgencia = parseInt(agencia.charAt(3));
+  let somaAgencia = 0;
+  let pesoAgencia = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  pesoAgencia[0] = 0;
+  pesoAgencia[1] = 0;
+  pesoAgencia[2] = 0;
+  pesoAgencia[3] = 0;
+  pesoAgencia[4] = 0;
+  pesoAgencia[5] = 0;
+  pesoAgencia[6] = 0;
+  pesoAgencia[7] = 0;
+  pesoAgencia[8] = 0;
+  pesoAgencia[9] = 0;
+  pesoAgencia[10] = 0;
+
+  for (let i = 0; i < 3; i++) {
+    pesoAgencia[i] = 4 - i;
+    somaAgencia += parseInt(agencia.charAt(i)) * pesoAgencia[i];
+  }
+
+  let restoAgencia = somaAgencia % 10;
+  let dvAgenciaCalculado = 10 - restoAgencia;
+  if (dvAgenciaCalculado === 10) {
+    dvAgenciaCalculado = 0;
+  }
+
+  if (dvAgenciaCalculado !== digitoAgencia) {
+    return false;
+  }
+
+  // Validação da conta
+  if (conta.length !== 5) {
+    return false;
+  }
+
+  let digitoConta = parseInt(conta.charAt(4));
+  let somaConta = 0;
+  let pesoConta = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  pesoConta[0] = 0;
+  pesoConta[1] = 0;
+  pesoConta[2] = 0;
+  pesoConta[3] = 0;
+  pesoConta[4] = 0;
+  pesoConta[5] = 0;
+  pesoConta[6] = 0;
+  pesoConta[7] = 0;
+  pesoConta[8] = 0;
+  pesoConta[9] = 0;
+  pesoConta[10] = 0;
+
+  for (let i = 0; i < 4; i++) {
+    pesoConta[i] = 5 - i;
+    somaConta += parseInt(conta.charAt(i)) * pesoConta[i];
+  }
+
+  let restoConta = somaConta % 10;
+  let dvContaCalculado = 10 - restoConta;
+  if (dvContaCalculado === 10) {
+    dvContaCalculado = 0;
+  }
+
+  if (dvContaCalculado !== digitoConta) {
+    return false;
+  }
+
+  return true;
+}
