@@ -1,0 +1,67 @@
+function validarAgenciaContaItau(agencia, conta) {
+  // Verifica se os valores são numéricos
+  if (!/^\d+$/.test(agencia) || !/^\d+$/.test(conta)) {
+    return false;
+  }
+
+  // Validação da agência
+  let agenciaSemDV = parseInt(agencia);
+  let somaAgencia = 0;
+  let pesoAgencia = 2;
+  let tempAgencia;
+
+  while (agenciaSemDV > 0) {
+    tempAgencia = (agenciaSemDV % 10) * pesoAgencia;
+    somaAgencia += tempAgencia;
+    agenciaSemDV = Math.floor(agenciaSemDV / 10);
+    pesoAgencia++;
+  }
+
+  let restoAgencia = somaAgencia % 11;
+  let dvAgenciaCalculado = 11 - restoAgencia;
+  if (dvAgenciaCalculado === 10) {
+    dvAgenciaCalculado = 0;
+  } else if (dvAgenciaCalculado === 11) {
+    dvAgenciaCalculado = 1;
+  }
+
+  if (dvAgenciaCalculado !== parseInt(agencia.substr(-1))) {
+    return false;
+  }
+
+  // Validação da conta
+  let contaSemDV = parseInt(conta);
+  let somaConta = 0;
+  let pesoConta = 2;
+  let tempConta;
+  
+  
+  while (contaSemDV > 0) {
+    tempConta = (contaSemDV % 10) * pesoConta;
+    somaConta += tempConta;
+    contaSemDV = Math.floor(contaSemDV / 10);
+    pesoConta++;
+  }
+
+  let restoConta = somaConta % 11;
+  let dvContaCalculado = 11 - restoConta;
+  if (dvContaCalculado === 10) {
+    dvContaCalculado = 0;
+  } else if (dvContaCalculado === 11) {
+    dvContaCalculado = 1;
+  }
+
+  return dvContaCalculado === parseInt(conta.substr(-1));
+}
+
+// Exemplo de uso:
+const agencia = "1234"; // Agência válida: 1234-5
+const conta = "56789"; // Conta válida: 56789-0
+
+if (validarAgenciaContaItau(agencia, conta)) {
+  console.log("Agência e conta válidas.");
+} else {
+  console.log("Agência e conta inválidas.");
+}
+
+  
