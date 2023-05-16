@@ -1,0 +1,49 @@
+function validarContaItau(agencia, conta) {
+  // Removendo possíveis caracteres não numéricos
+  agencia = agencia.replace(/\D/g, '');
+  conta = conta.replace(/\D/g, '');
+
+  // Verificando o tamanho da agência e da conta
+  if (agencia.length !== 4 || conta.length !== 5) {
+    return false;
+  }
+
+  // Calculando o dígito verificador da agência
+  const agenciaDV = calcularDigitoVerificador(agencia, [2, 3, 4, 5]);
+
+  // Verificando se o dígito verificador da agência está correto
+  if (agenciaDV !== parseInt(agencia.slice(-1))) {
+    return false;
+  }
+
+  // Calculando o dígito verificador da conta
+  const contaDV = calcularDigitoVerificador(conta, [2, 3, 4, 5, 6, 7, 8, 9]);
+
+  // Verificando se o dígito verificador da conta está correto
+  if (contaDV !== parseInt(conta.slice(-1))) {
+    return false;
+  }
+
+  // Se chegou até aqui, agência e conta são válidas
+  return true;
+}
+
+function calcularDigitoVerificador(numero, pesos) {
+  let soma = 0;
+
+  for (let i = 0; i < numero.length; i++) {
+    soma += parseInt(numero.charAt(i)) * pesos[i % pesos.length];
+  }
+
+  const resto = soma % 10;
+  const digitoVerificador = (10 - resto) % 10;
+
+  return digitoVerificador;
+}
+
+// Exemplo de uso
+const agencia = '1234';
+const conta = '56789';
+const isValido = validarContaItau(agencia, conta);
+
+console.log(isValido); // Saída: true (se a agência e conta forem válidas no Itaú)
