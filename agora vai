@@ -1,0 +1,57 @@
+function validarAgenciaContaItau(agencia, conta) {
+  // Verifica se os valores são numéricos
+  if (!/^\d+$/.test(agencia) || !/^\d+$/.test(conta)) {
+    return false;
+  }
+
+  // Validação da agência
+  let pesoAgencia = [2, 7, 6, 5, 4, 3, 2];
+  let agenciaSemDV = agencia.substring(0, 7);
+  let somaAgencia = 0;
+
+  for (let i = 0; i < agenciaSemDV.length; i++) {
+    somaAgencia += parseInt(agenciaSemDV.charAt(i)) * pesoAgencia[i];
+  }
+
+  let restoAgencia = somaAgencia % 11;
+  let dvAgenciaCalculado = 11 - restoAgencia;
+  if (dvAgenciaCalculado >= 10) {
+    dvAgenciaCalculado = 0;
+  }
+
+  let codigoAgencia = parseInt(agencia.substring(7, 9));
+  let tabelaCodigosAgencia = [81, 82, 83, 84, 85, 86, 87, 89, 91, 93, 94, 95, 96, 97, 98];
+  let agenciaValida = false;
+
+  for (let i = 0; i < tabelaCodigosAgencia.length; i++) {
+    if (codigoAgencia === tabelaCodigosAgencia[i]) {
+      agenciaValida = true;
+      break;
+    }
+  }
+
+  if (!agenciaValida || dvAgenciaCalculado !== parseInt(agencia.charAt(7))) {
+    return false;
+  }
+
+  // Validação da conta
+  let pesoConta = [2, 7, 6, 5, 4, 3, 2];
+  let contaSemDV = conta.substring(0, 8);
+  let somaConta = 0;
+
+  for (let i = 0; i < contaSemDV.length; i++) {
+    somaConta += parseInt(contaSemDV.charAt(i)) * pesoConta[i];
+  }
+
+  let restoConta = somaConta % 11;
+  let dvContaCalculado = 11 - restoConta;
+  if (dvContaCalculado >= 10) {
+    dvContaCalculado = 0;
+  }
+
+  if (dvContaCalculado !== parseInt(conta.charAt(8))) {
+    return false;
+  }
+
+  return true;
+}
