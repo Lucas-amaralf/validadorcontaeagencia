@@ -1,0 +1,67 @@
+function validarAgenciaContaItau(agencia, conta) {
+  // Verifica se os valores são numéricos
+  if (!/^\d+$/.test(agencia) || !/^\d+$/.test(conta)) {
+    return false;
+  }
+
+  // Verifica o dígito verificador da agência
+  let agenciaDV = parseInt(agencia.substr(-1));
+  let agenciaSemDV = parseInt(agencia.substr(0, agencia.length - 1));
+
+  let soma = 0;
+  let peso = 2;
+  let temp;
+
+  while (agenciaSemDV > 0) {
+    temp = (agenciaSemDV % 10) * peso;
+    soma += temp;
+    agenciaSemDV = Math.floor(agenciaSemDV / 10);
+    peso++;
+  }
+
+  let resto = soma % 11;
+  let dvCalculado = 11 - resto;
+  if (dvCalculado === 10) {
+    dvCalculado = 0;
+  } else if (dvCalculado === 11) {
+    dvCalculado = 1;
+  }
+
+  if (agenciaDV !== dvCalculado) {
+    return false;
+  }
+
+  // Verifica o dígito verificador da conta
+  let contaDV = parseInt(conta.substr(-1));
+  let contaSemDV = parseInt(conta.substr(0, conta.length - 1));
+
+  soma = 0;
+  peso = 2;
+
+  while (contaSemDV > 0) {
+    temp = (contaSemDV % 10) * peso;
+    soma += temp;
+    contaSemDV = Math.floor(contaSemDV / 10);
+    peso++;
+  }
+
+  resto = soma % 11;
+  dvCalculado = 11 - resto;
+  if (dvCalculado === 10) {
+    dvCalculado = 0;
+  } else if (dvCalculado === 11) {
+    dvCalculado = 1;
+  }
+
+  return contaDV === dvCalculado;
+}
+
+// Exemplo de uso:
+const agencia = "1234"; // Agência válida: 1234-5
+const conta = "567890"; // Conta válida: 56789-0
+
+if (validarAgenciaContaItau(agencia, conta)) {
+  console.log("Agência e conta válidas.");
+} else {
+  console.log("Agência e conta inválidas.");
+}
