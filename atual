@@ -1,0 +1,37 @@
+function validarAgenciaItau(agencia) {
+  // Verifica se o valor é numérico
+  if (!/^\d+$/.test(agencia)) {
+    return false;
+  }
+
+  let agenciaSemDV = parseInt(agencia);
+  let soma = 0;
+  let peso = 2;
+  let temp;
+
+  while (agenciaSemDV > 0) {
+    temp = (agenciaSemDV % 10) * peso;
+    soma += temp;
+    agenciaSemDV = Math.floor(agenciaSemDV / 10);
+    peso++;
+  }
+
+  let resto = soma % 11;
+  let dvCalculado = 11 - resto;
+  if (dvCalculado === 10) {
+    dvCalculado = 0;
+  } else if (dvCalculado === 11) {
+    dvCalculado = 1;
+  }
+
+  return dvCalculado === parseInt(agencia.substr(-1));
+}
+
+// Exemplo de uso:
+const agencia = "1234"; // Agência válida: 1234-5
+
+if (validarAgenciaItau(agencia)) {
+  console.log("Agência válida.");
+} else {
+  console.log("Agência inválida.");
+}
